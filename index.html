@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic ApexCharts</title>
+    <!-- Include ApexCharts library -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+
+<!-- Container for the chart -->
+<div id="chart"></div>
+
+<script>
+    // Function to parse URL parameters
+    function getURLParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Get the 'config' parameter from the URL
+    const chartConfigParam = getURLParameter('config');
+
+    if (chartConfigParam) {
+        try {
+            // Parse the 'config' parameter as JSON
+            const chartConfig = eval('(' + chartConfigParam + ')');
+
+            // Create a new ApexCharts instance with the provided configuration
+            const chartOptions = {
+                chart: chartConfig.chart || {},
+                series: chartConfig.series || [],
+                xaxis: chartConfig.xaxis || {},
+                // Add other chart options as needed
+            };
+
+            const chart = new ApexCharts(document.getElementById('chart'), chartOptions);
+
+            // Render the chart
+            chart.render();
+        } catch (error) {
+            console.error('Error parsing chart configuration:', error);
+        }
+    } else {
+        console.error('No chart configuration provided in the URL.');
+    }
+</script>
+
+</body>
+</html>
